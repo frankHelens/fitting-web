@@ -16,8 +16,22 @@
           {{realName}}
           <i class="fa fa-angle-down"></i>
         </span>
-        <account slot="list"></account>
+        <account
+          slot="list"
+          @dialogEvent="dialogEvent"
+        ></account>
       </top-menu-item>
+      <el-dialog
+        title="解锁上传"
+        size="tiny"
+        v-model="dialogVisible">
+        <SmartForm
+          :formList="formList"
+          :columns="columns"
+          :values="values"
+          :buttonList="buttonList"
+        />
+      </el-dialog>
     </ul>
   </div>
 </template>
@@ -28,7 +42,10 @@ import TopMenuItem from './TopMenuItem'
 import Alarms from './Alarms'
 import TaskList from './TaskList'
 import Account from './Account'
+import SmartForm from '@/components/SmartForm'
+import { fetchCreate } from '@/utils/api'
 
+/* globals localStorage */
 export default {
   name: 'Topbar',
   props: {
@@ -41,16 +58,68 @@ export default {
     TopMenuItem,
     Alarms,
     TaskList,
-    Account
+    Account,
+    SmartForm
   },
   data () {
     return {
-      taskNum: 0
+      taskNum: 0,
+      dialogVisible: false,
+      formList: ['uploadPwd'],
+      columns: {
+        uploadPwd: {
+          label: '解锁密码',
+          form: {
+            type: 'password',
+            rules: [{
+              required: true, message: '请输密码'
+            }]
+          }
+        }
+      },
+      values: {},
+      buttonList: [{
+        name: 'submit',
+        label: '提交',
+        type: 'primary',
+        funcProps: {
+          topForm: this
+        },
+        func (data, props, button) {
+          button.loading = true
+          props.topForm.submitEvent(data, button)
+        }
+      }]
     }
   },
   methods: {
     getTaskNum (taskNum) {
       this.taskNum = taskNum
+    },
+    dialogEvent (bol) {
+      this.dialogVisible = true
+    },
+    submitEvent (data, button) {
+      fetchCreate({
+        resource: '/users',
+        data: data
+      })
+      .then(data => {
+        if (data) {
+          this.$message({
+            message: '验证成功！',
+            showClose: true,
+            type: 'success'
+          })
+          localStorage.timestamp = data.timestamp
+          this.$router.replace({
+            path: '/query/list',
+            query: data
+          })
+        }
+      })
+      button.loading = false
+      this.dialogVisible = false
     }
   }
 }

@@ -3,9 +3,8 @@ var prodEnv = require('./prod.env')
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  URL: '"http://192.168.50.92:3000"'
+  URL: '"http://localhost:3000"'
   // URL: '"http://120.78.82.211:3000"'
-  // URL: '"http://120.78.82.211"'
   // URL: '"http://st56.xicp.net:20081"'
   // URL: '"http://192.168.50.222:30080"'
   // 光胜

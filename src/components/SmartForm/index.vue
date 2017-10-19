@@ -110,7 +110,6 @@ export default {
             el: this
           },
           func: (data, props, name, event) => {
-            console.log(data)
             if (button.validate) {
               this.$refs['form'].validate((valid) => {
                 if (valid) {

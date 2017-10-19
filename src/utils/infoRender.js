@@ -14,6 +14,7 @@ export function multiselectRender (data, options) {
 }
 
 export function timeRender (data, dateType) {
+  console.log(data)
   return data ? moment(data).format(dateType) : ''
 }
 

@@ -2,10 +2,10 @@
   <DataTablePage
     ref="table"
     mainColumn="name"
-    longColumn="remark"
+    longColumn="num"
     resource="/data"
-    title="查询"
-    label="查询"
+    title="公司通常发天天快递，查找单号会有速尔，是速尔快递"
+    label=""
     labelName="name"
     dialogSize="tiny"
     :relation="false"
@@ -17,8 +17,10 @@
     :createList="createList"
     :updateList="updateList"
     :operation="operation"
-    :columns="columns">
+    :columns="columns"
+    @getData="getData">
     <el-upload
+      v-if="uploadOpen"
       slot="toolbar"
       name="file"
       accept=".xlsx"
@@ -39,8 +41,9 @@ import DataTablePage from '@/containers/DataTablePage'
 // import { toolbarCreate } from '@/containers/DataTablePage/toolbar'
 // import { operationUpdate, operationDelete } from '@/containers/DataTablePage/operation'
 import { getApi } from '@/utils/common'
-import { fetchUpdate } from '@/utils/api'
+import moment from 'moment'
 
+/* globals localStorage */
 export default {
   name: 'query',
   components: {
@@ -51,13 +54,28 @@ export default {
       return getApi() + 'upload'
     }
   },
+  watch: {
+    uploadOpen (val) {
+      this.uploadOpen = val
+    },
+    $route (val) {
+      const timestamp = Number(localStorage.timestamp)
+      // 设置周期
+      const period = timestamp + 7 * 24 * 3600 * 1000
+      this.uploadOpen = timestamp && period >= Number(moment().format('x'))
+    }
+  },
   data () {
+    const timestamp = Number(localStorage.timestamp)
+    // 设置周期
+    const period = timestamp + 7 * 24 * 3600 * 1000
     return {
+      uploadOpen: timestamp && period >= Number(moment().format('x')),
       uploadLoading: false,
       toolbar: [],
       operation: [],
-      tableInitList: ['name', 'contact', 'num', 'updateTime'],
-      tableFullList: ['name', 'contact', 'num', 'updateTime'],
+      tableInitList: ['name', 'contact', 'updateTime', 'num'],
+      tableFullList: ['name', 'contact', 'updateTime', 'num'],
       createList: ['name'],
       updateList: [],
       filterInitList: ['name', 'contact'],
@@ -82,7 +100,7 @@ export default {
           label: '单号'
         },
         updateTime: {
-          dataType: 'YYYY-MM-DD',
+          dateType: 'YYYY-MM-DD',
           type: 'time',
           label: '时间'
         }
@@ -90,6 +108,23 @@ export default {
     }
   },
   methods: {
+    getData (data) {
+      if (data.data.length === 0) {
+        this.$notify.error({
+          title: '提示',
+          message: '您的信息小二可能漏记了，请联系徐巧滢！',
+          duration: 5000
+        })
+      }
+      if (data.data.length === 1 && data.data[0].num === '') {
+        this.$notify({
+          title: '提示',
+          message: '您的货还没有发，请耐心等待！',
+          type: 'warning',
+          duration: 5000
+        })
+      }
+    },
     beforeUpload () {
       this.uploadLoading = true
       return true
@@ -97,30 +132,21 @@ export default {
     uploadSuccess (response, file) {
       this.uploadLoading = false
       if (response.code === 0) {
-        const name = response.data.filename
-        this.setData(name)
-        // this.showNotify(response.message, response.data)
+        this.$message({
+          type: 'success',
+          showClose: true,
+          message: '导入数据成功！'
+        })
+        setTimeout(() => {
+          this.$refs.table.getData()
+        }, 500)
       } else {
-        this.message({
+        this.$message({
           type: 'error',
           showClose: true,
           message: response.message
         })
       }
-    },
-    setData (name) {
-      fetchUpdate({
-        resource: 'upload',
-        id: name
-      })
-      .then(data => {
-        this.message({
-          type: 'success',
-          showClose: true,
-          message: '导出成功！'
-        })
-        this.$refs.table.getData()
-      })
     }
   }
 }

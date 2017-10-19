@@ -41,11 +41,11 @@ export default {
         icon: 'search',
         type: 'PAGE'
       }],
-      realName: '超级管理员',
+      realName: 'Admin',
       data: {
         'id': 1,
         'loginName': 'sa',
-        'name': '超级管理员',
+        'name': 'Admin',
         'menus': []
       }
     }

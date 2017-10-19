@@ -38,6 +38,7 @@
             </el-dialog>
           </div>
           <div
+            class="text-overflow"
             v-else-if="!columns[columnName].html">
             {{ props.content }}
           </div>
@@ -135,6 +136,10 @@ export default {
 </script>
 
 <style scoped lang="sass">
+.text-overflow
+  text-overflow: ellipsis
+  white-space: nowrap
+  overflow: hidden
 .operationClass
   height: 24px
 .fa

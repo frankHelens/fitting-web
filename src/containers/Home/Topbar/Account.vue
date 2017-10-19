@@ -1,15 +1,18 @@
 <template>
   <ul class="top-menu-account">
-    <li>
-      <router-link to="/base/changePassword">
-        <i class="fa fa-lock"></i>修改密码
-      </router-link>
-    </li>
-    <li>
+<!--     <li>
       <a href="javascript:;" @click="logout">
         <i class="fa fa-sign-out"></i>退出
       </a>
+    </li> -->
+    <li>
+      <a @click="dialogEvent"><i class="fa fa-lock"></i>导入功能</a>
     </li>
+    <!-- <li>
+      <router-link to="/base/changePassword">
+        <i class="fa fa-user"></i>关于我们
+      </router-link>
+    </li> -->
   </ul>
 </template>
 
@@ -23,6 +26,9 @@ export default {
     }
   },
   methods: {
+    dialogEvent () {
+      this.$emit('dialogEvent', true)
+    },
     logout () {
       logout(() => {
         this.$message({
