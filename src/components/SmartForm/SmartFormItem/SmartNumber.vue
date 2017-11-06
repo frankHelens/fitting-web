@@ -1,13 +1,13 @@
 <template>
-  <input-number
+  <!-- <input-number
     :disabled="disabled"
     :min="min"
     :max="max"
     :step="step"
     v-model="value"
     @on-change="changeValue">
-  </input-number>
-  <!-- <el-input-number
+  </input-number> -->
+  <el-input-number
     v-model="value"
     :disabled="disabled"
     :placeholder="placeholder"
@@ -16,15 +16,15 @@
     :step="step"
     :debounce="debounce"
     @change="changeValue">
-  </el-input-number> -->
+  </el-input-number>
 </template>
 
 <script>
-  import InputNumber from 'iview/src/components/input-number'
+  // import InputNumber from 'iview/src/components/input-number'
   import { dataTypeFunc } from '@/utils/common'
   export default {
     components: {
-      InputNumber
+      // InputNumber
     },
     props: {
       disabled: {

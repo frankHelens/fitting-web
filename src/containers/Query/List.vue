@@ -4,7 +4,7 @@
     mainColumn="name"
     longColumn="num"
     resource="/data"
-    title="公司通常发天天快递，查找单号会有速尔，是速尔快递"
+    title="配件查询系统"
     label=""
     labelName="name"
     dialogSize="tiny"
@@ -64,6 +64,13 @@ export default {
       const period = timestamp + 7 * 24 * 3600 * 1000
       this.uploadOpen = timestamp && period >= Number(moment().format('x'))
     }
+  },
+  created () {
+    this.$notify.info({
+      title: '温馨提示',
+      message: '公司通常发天天快递，若查询的单号含有速尔快递，则为速尔快递！',
+      duration: 0
+    })
   },
   data () {
     const timestamp = Number(localStorage.timestamp)
@@ -151,3 +158,4 @@ export default {
   }
 }
 </script>
+

@@ -9,7 +9,8 @@ function resolve (dir) {
 
 module.exports = {
   entry: {
-    app: './src/main.js'
+    app: ["babel-polyfill", "./src/main.js"]
+    // app: './src/main.js'
   },
   output: {
     path: config.build.assetsRoot,
@@ -65,10 +66,6 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
-      },
-      {
-        test: /iview.src.*?js$/,
-        loader: 'babel-loader'
       }
     ]
   }

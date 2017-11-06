@@ -5,10 +5,10 @@ import VueRouter from 'vue-router'
 import router from './router'
 import store from './store'
 import ElementUI from 'element-ui'
-import './assets/iview/iview.css'
 import 'element-ui/lib/theme-default/index.css'
 import 'font-awesome/css/font-awesome.min.css'
 import './assets/css/custom.css'
+import 'babel-polyfill'
 
 import echarts from 'echarts/lib/echarts'
 import 'echarts/lib/chart/pie'
@@ -24,15 +24,14 @@ Vue.use(ElementUI)
 // const colorPalette = ['#d87c7c', '#919e8b', '#d7ab82', '#6e7074', '#61a0a8', '#efa18d', '#787464', '#cc7e63', '#724e58', '#4b565b']
 
 const colorPalette = [
-  '#3fb1e3',
-  '#6be6c1',
-  '#626c91',
-  '#96dee8',
-  '#f3d999',
-  '#82b6e9',
-  '#2e4783',
-  '#6699FF',
-  '#38b6b6'
+  '#48b0f7',
+  '#f55753',
+  '#f8d053',
+  '#ff783c',
+  '#6d5cae',
+  '#10cfbd',
+  '#2bc164',
+  '#b1b3b5'
 ]
 echarts.registerTheme('vintage', {
   color: colorPalette,
