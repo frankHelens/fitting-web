@@ -17,6 +17,7 @@
     :createList="createList"
     :updateList="updateList"
     :operation="operation"
+    :operationWidth="60"
     :columns="columns"
     @getData="getData">
     <el-upload
@@ -39,7 +40,7 @@
 <script>
 import DataTablePage from '@/containers/DataTablePage'
 // import { toolbarCreate } from '@/containers/DataTablePage/toolbar'
-// import { operationUpdate, operationDelete } from '@/containers/DataTablePage/operation'
+import { operationDelete } from '@/containers/DataTablePage/operation'
 import { getApi } from '@/utils/common'
 import moment from 'moment'
 
@@ -63,6 +64,7 @@ export default {
       // 设置周期
       const period = timestamp + 7 * 24 * 3600 * 1000
       this.uploadOpen = timestamp && period >= Number(moment().format('x'))
+      this.operation = this.uploadOpen ? [operationDelete] : []
     }
   },
   created () {
@@ -71,6 +73,13 @@ export default {
       message: '公司通常发天天快递，若查询的单号含有速尔快递，则为速尔快递！',
       duration: 0
     })
+    setTimeout(() => {
+      this.$notify.info({
+        title: '公告',
+        message: '此系统将2018年2月14号停止运营, 在此，由衷感谢您对本作者的支持和关注，并对关闭业务给您带来的不便深表歉意！',
+        duration: 0
+      })
+    }, 1000)
   },
   data () {
     const timestamp = Number(localStorage.timestamp)
@@ -80,7 +89,7 @@ export default {
       uploadOpen: timestamp && period >= Number(moment().format('x')),
       uploadLoading: false,
       toolbar: [],
-      operation: [],
+      operation: timestamp && period >= Number(moment().format('x')) ? [operationDelete] : [],
       tableInitList: ['name', 'contact', 'updateTime', 'num'],
       tableFullList: ['name', 'contact', 'updateTime', 'num'],
       createList: ['name'],
